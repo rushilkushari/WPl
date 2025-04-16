@@ -5,6 +5,8 @@ if (!isset($_SESSION['login'])) {
     exit();
 }
 $phone = $_SESSION['login'];
+$fname = $_SESSION['fname'];
+
 ?>
 
 <!DOCTYPE html>
@@ -65,7 +67,7 @@ $phone = $_SESSION['login'];
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
-            <a class="navbar-brand">Welcome, <?php echo htmlspecialchars($phone); ?></a>
+            <a class="navbar-brand">Welcome, <?php echo htmlspecialchars($fname); ?></a>
             <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -81,7 +83,7 @@ $phone = $_SESSION['login'];
                         <a class="nav-link" href="sendmoney.php">Send Money</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="requestmoney.php">Request Money</a>
+                        <a class="nav-link" href="requestmoney.php">View Balance</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
@@ -114,9 +116,9 @@ $phone = $_SESSION['login'];
                 <div class="col-md-3">
                     <div class="card shadow-sm p-3">
                         <i class="bi bi-currency-exchange mb-2"></i>
-                        <h5>Request Money</h5>
-                        <p>Ask contacts for payments.</p>
-                        <a href="requestmoney.php" class="btn btn-primary btn-sm">Request</a>
+                        <h5>View Bank Balance</h5>
+                        <p>Check your current bank balance</p>
+                        <a href="requestmoney.php" class="btn btn-primary btn-sm">View</a>
                     </div>
                 </div>
                 <div class="col-md-3">
