@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bindParam(':option', $option);
 
     if ($stmt->execute()) {
-        $_SESSION["user"] = $fname; // Or $_SESSION["user"] = $fname . " " . $lname;
+        $_SESSION["user"] = $fname;
         $_SESSION["email"] = $email;
         setcookie("remember_email", $email, time() + (86400 * 30), "/");
 
@@ -91,7 +91,6 @@ ob_end_flush();
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -151,15 +150,6 @@ ob_end_flush();
 
         .menuItem:hover {
             color: rgb(206, 205, 199);
-        }
-
-        .hamburger {
-            display: none;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
         }
 
         main {
@@ -242,6 +232,12 @@ ob_end_flush();
         .terms-and-conditions input[type="checkbox"] {
             margin-right: 5px;
         }
+
+        #password-strength {
+            font-weight: bold;
+            white-space: pre-line;
+            margin-top: 8px;
+        }
     </style>
 </head>
 
@@ -287,6 +283,7 @@ ob_end_flush();
             <div class="form-group">
                 <label for="password">Password *</label>
                 <input type="password" id="password" name="password" required>
+                <div id="password-strength"></div>
             </div>
 
             <div class="form-group">
@@ -313,5 +310,39 @@ ob_end_flush();
             </div>
         </form>
     </div>
+
+    <script>
+        const passwordInput = document.getElementById("password");
+        const strengthText = document.getElementById("password-strength");
+
+        passwordInput.addEventListener("input", function () {
+            const password = passwordInput.value;
+            let strength = 0;
+            let messages = [];
+
+            const hasLower = /[a-z]/.test(password);
+            const hasUpper = /[A-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isLongEnough = password.length >= 8;
+
+            if (hasLower) strength++; else messages.push("lowercase");
+            if (hasUpper) strength++; else messages.push("uppercase");
+            if (hasNumber) strength++; else messages.push("number");
+            if (hasSpecial) strength++; else messages.push("special character");
+            if (isLongEnough) strength++; else messages.push("min 8 characters");
+
+            if (strength === 5) {
+                strengthText.innerText = "Strong password 💪";
+                strengthText.style.color = "green";
+            } else if (strength >= 3) {
+                strengthText.innerText = "Medium strength ⚠️\nMissing: " + messages.join(", ");
+                strengthText.style.color = "orange";
+            } else {
+                strengthText.innerText = "Weak password ❌\nMissing: " + messages.join(", ");
+                strengthText.style.color = "red";
+            }
+        });
+    </script>
 </body>
 </html>
